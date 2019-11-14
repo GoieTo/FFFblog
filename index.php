@@ -6,15 +6,17 @@ $dbname = "blog";
 
 $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 
-$intro = $conn->query('select * from intro where status="1" and id="1"');
-$intro2 = $conn->query('select * from intro where status="1" and id="2"');
-$article = $conn->query('select * from article a INNER join author b on a.author_id=b.id');
-$article2 = $conn->query('select * from article ORDER BY article_createtime desc limit 3');
+$intro = $conn->query('SELECT * FROM intro WHERE status="1" AND id="1"');
+$intro2 = $conn->query('SELECT * FROm intro WHERE status="1" AND id="2"');
+$article = $conn->query('SELECT * FROM article a INNER JOIN blog_user b ON a.user_id=b.id');
+$article2 = $conn->query('SELECT * FROM article ORDER BY article_createtime DESC limit 3');
 
 $intro_row = $intro->fetch();
 $intro_row2 = $intro2->fetch();
 $article_row = $article->fetchAll();
 $article_row2 = $article2->fetchAll();
+
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -83,6 +85,20 @@ $article_row2 = $article2->fetchAll();
               </li>
               <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
               </li>
+              <li class="nav-item">
+                      <?php
+                      if ($_SESSION['username']){
+                          ?>
+                      <a href="app.php" class="nav-link "><?php echo $_SESSION['username']; ?></a>
+                          <?php
+                      }else{
+                          ?>
+                              <a href="login.php" class="nav-link ">Login</a>
+                          <?php
+                      }
+                      ?>
+                  </a>
+              </li>
             </ul>
             <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
             <ul class="langs navbar-text"><a href="#" class="active">EN</a><span>           </span><a href="#">ES</a></ul>
@@ -95,7 +111,7 @@ $article_row2 = $article2->fetchAll();
       <div class="container">
         <div class="row">
           <div class="col-lg-7">
-            <h1><!--Bootstrap 4 Blog - A free template by Bootstrap Temple-->
+            <h1>
                 <?php echo $intro_row['sign']; ?>
             </h1><a href="#" class="hero-link">Discover More</a>
           </div>
@@ -107,8 +123,8 @@ $article_row2 = $article2->fetchAll();
       <div class="container">
         <div class="row">
           <div class="col-lg-8">
-            <h2 class="h3"><!--Some great intro here--><?php echo $intro_row['title']; ?></h2>
-            <p class="text-big"><!--Place a nice <strong>introduction</strong> here <strong>to catch reader's attention</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderi.--><?php echo $intro_row['content']; ?></p>
+            <h2 class="h3"><?php echo $intro_row['title']; ?></h2>
+            <p class="text-big"><?php echo $intro_row['content']; ?></p>
           </div>
         </div>
       </div>
@@ -116,7 +132,9 @@ $article_row2 = $article2->fetchAll();
     <section class="featured-posts no-padding-top">
       <div class="container">
         <!-- Post-->
-      <?php foreach($article_row as $key => $value){ ?>
+      <?php
+      foreach($article_row as $key => $value) {
+      ?>
           <div class="row d-flex align-items-stretch">
               <div class="text col-lg-7">
                   <div class="text-inner d-flex align-items-center">
@@ -129,7 +147,7 @@ $article_row2 = $article2->fetchAll();
                           <p><?php echo $value['content']; ?></p>
                           <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                                   <div class="avatar"><img src="<?php echo $value['photo']; ?>" alt="..." class="img-fluid"></div>
-                                  <div class="title"><span><?php echo $value['name']; ?></span></div></a>
+                                  <div class="title"><span><?php echo $value['username']; ?></span></div></a>
                               <div class="date"><i class="icon-clock"></i><?php echo $value['article_createtime']; ?></div>
                               <div class="comments"><i class="icon-comment"></i><?php echo $value['reading']; ?></div>
                           </footer>
@@ -138,7 +156,9 @@ $article_row2 = $article2->fetchAll();
               </div>
               <div class="image col-lg-5"><img src="<?php echo $value['cover']; ?>" alt="..."></div>
           </div>
-      <?php } ?>
+      <?php
+      }
+      ?>
       </div>
     </section>
     <div class="tlinks">Collect from <a href="http://www.cssmoban.com/"  title="网站模板">网站模板</a></div>
@@ -161,7 +181,8 @@ $article_row2 = $article2->fetchAll();
         </header>
         <div class="row">
             <?php
-            foreach ($article_row2 as $key => $value){ ?>
+            foreach ($article_row2 as $key => $value){
+            ?>
           <div class="post col-md-4">
             <div class="post-thumbnail"><a href="post.html"><img src="<?php echo $value['cover']; ?>" alt="..." class="img-fluid"></a></div>
             <div class="post-details">
@@ -173,7 +194,9 @@ $article_row2 = $article2->fetchAll();
               <p class="text-muted"><?php echo $value['content']; ?></p>
             </div>
           </div>
-            <?php } ?>
+            <?php
+            }
+            ?>
         </div>
       </div>
     </section>
@@ -204,7 +227,7 @@ $article_row2 = $article2->fetchAll();
           <?php
           foreach ($article_row as $key => $value){ ?>
         <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="img/gallery-1.jpg" data-fancybox="gallery" class="image"><img src="<?php echo $value['cover']; ?>" alt="..." class="img-fluid">
+          <div class="item"><a href="<?php echo $value['cover'];?>" data-fancybox="gallery" class="image"><img src="<?php echo $value['cover']; ?>" alt="..." class="img-fluid">
               <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
         </div>
           <?php } ?>

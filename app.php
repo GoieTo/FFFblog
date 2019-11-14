@@ -6,7 +6,7 @@ $dbname = "blog";
 
 $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 
-$article = $conn->query('select * from article a inner join author b on a.author_id=b.id');
+$article = $conn->query('SELECT * FROM article a INNER JOIN blog_user b ON a.user_id=b.id');
 $article_row = $article->fetchAll();
 ?>
 
@@ -23,6 +23,10 @@ $article_row = $article->fetchAll();
                 font-size: x-large;
                 font-style: italic;
             }
+            .sidehover:hover{
+                color: #5690D2;
+                font-style: initial;
+            }
             .contant{
                 position: relative;
                 float: right;
@@ -37,8 +41,7 @@ $article_row = $article->fetchAll();
     </head>
     <body>
     <div class="left-side">
-        <ul>首页</ul>
-        <ul>文章</ul>
+        <ul onclick="window.location.href='index.php'" class="sidehover">首页</ul>
     </div>
     <div class="contant">
         <input type="button" value="新增文章" class="arti-button" onclick="window.location.href='add.php'">
@@ -56,9 +59,10 @@ $article_row = $article->fetchAll();
                 <tr align="center">
                     <td><?php echo $value['article_id']; ?></td>
                     <td><?php echo $value['title']; ?></td>
-                    <td><?php echo $value['name']; ?></td>
+                    <td><?php echo $value['username']; ?></td>
                     <td><?php echo $value['status']; ?></td>
-                    <td><input type="button" value="编辑" onclick="window.location.href='edit.php'">&nbsp;&nbsp;&nbsp;<button>删除</button></td>
+                    <td><input type="button" value="编辑" onclick="window.location.href='edit.php'">
+                        &nbsp;&nbsp;&nbsp;<button>删除</button></td>
                 </tr>
                 <?php
             }
