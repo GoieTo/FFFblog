@@ -5,7 +5,7 @@ $password = "root";
 $dbname = "blog";
 
 session_start();
-
+/*print_r($_SESSION[$blogusername]);die();*/
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['title'])) {
         echo "请输入标题";

@@ -4,7 +4,7 @@ $username = "root";
 $password = "root";
 $dbname = "blog";
 
-$conn=new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $blogusername = trim($_POST['username']);
 $blogpassword = trim($_POST['password']);
 $bolglogin = $conn->query("SELECT * FROM blog_user WHERE username='$blogusername' and password='$blogpassword' ");
@@ -38,7 +38,6 @@ if (isset($_POST['login'])) {
         }
         // 处理完附加项后跳转到登录成功的首页
         header('location:index.php');
-        return $_SESSION['username'];
     }
 }
 ?>

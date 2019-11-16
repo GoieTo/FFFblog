@@ -6,10 +6,10 @@ $dbname = "blog";
 
 $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 
-$intro = $conn->query('SELECT * FROM intro WHERE status="1" AND id="1"');
-$intro2 = $conn->query('SELECT * FROm intro WHERE status="1" AND id="2"');
-$article = $conn->query('SELECT * FROM article a INNER JOIN blog_user b ON a.user_id=b.id');
-$article2 = $conn->query('SELECT * FROM article ORDER BY article_createtime DESC limit 3');
+$intro = $conn->query("SELECT * FROM intro WHERE status=1 AND id=1");
+$intro2 = $conn->query("SELECT * FROm intro WHERE status=1 AND id=2");
+$article = $conn->query("SELECT * FROM article a INNER JOIN blog_user b ON a.user_id=b.id");
+$article2 = $conn->query("SELECT * FROM article ORDER BY article_createtime DESC limit 3");
 
 $intro_row = $intro->fetch();
 $intro_row2 = $intro2->fetch();
